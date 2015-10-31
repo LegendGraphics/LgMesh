@@ -95,8 +95,8 @@ public: // virtual interface of BaseAttributeArray
   virtual BaseAttributeArray* clone() const
   {
     AttributeArray<T>* attr = new AttributeArray<T>(name_, value_);
-    p->data_ = data_;
-    return p;
+    attr->data_ = data_;
+    return attr;
   }
 
   virtual const std::type_info& type() { return typeid(T); };
@@ -168,13 +168,13 @@ public:
     return attr_array_ != NULL;
   }
 
-  reference operatorp[](int i)
+  reference operator[](int i)
   {
     assert(attr_array_ != NULL);
     return (*attr_array_)[i];
   }
 
-  const_reference operatro[](int i) const
+  const_reference operator[](int i) const
   {
     assert(attr_array_ != NULL);
     return (*attr_array_)[i];
