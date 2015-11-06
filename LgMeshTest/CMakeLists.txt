@@ -2,7 +2,7 @@ cmake_minimum_required( VERSION 2.8 )
 project( LgMeshTest )
 
 # EIGEN FILES
-SET( EIGEN_DIR "../LgMeshLib/extern" )
+SET( EIGEN_DIR ${PROJECT_SOURCE_DIR}/../extern/ )
 
 # LGMESH FILES
 SET( LgMeshLib_DIR "../LgMeshLib" )
@@ -14,8 +14,8 @@ FIND_PACKAGE( OpenGL REQUIRED ) # Currently enough
 #FIND_PACKAGE( GLEW REQUIRED )
 
 # GLFW and GLEW FILES
-SET( GLFW_INCLUDE_DIR "extern/glfw-win64/include" )
-SET( GLFW_LIB         ${PROJECT_SOURCE_DIR}/extern/glfw-win64/lib-vc2012/glfw3.lib )
+SET( GLFW_INCLUDE_DIR ${PROJECT_SOURCE_DIR}/../extern/glfw-win64/include )
+SET( GLFW_LIB         ${PROJECT_SOURCE_DIR}/../extern/glfw-win64/lib-vc2012/glfw3.lib )
 
 # GLEW FILES
 #SET( GLEW_INCLUDE_DIR "extern/glew-1.11.0/include" )

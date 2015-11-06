@@ -4,7 +4,7 @@
 #include "PolygonMesh.h"
 #include <string>
 
-namespace LgMesh {
+namespace LG {
 
 
 bool read_poly(PolygonMesh& mesh, const std::string& filename);

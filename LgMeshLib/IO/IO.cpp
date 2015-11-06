@@ -1,7 +1,7 @@
 #include "IO.h"
 #include "PolygonMesh.h"
 
-namespace LgMesh {
+namespace LG {
 
 
 

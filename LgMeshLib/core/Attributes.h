@@ -8,7 +8,7 @@
 #include <typeinfo>
 #include <vector>
 
-namespace LgMesh {
+namespace LG {
 
 
 class BaseAttributeArray
