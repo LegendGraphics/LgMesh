@@ -19,7 +19,7 @@ int main( int argc, char** argv )
   }
   std::cerr<<argv[1]<<std::endl;
 
-  LgMesh::PolygonMesh mesh;
+  LG::PolygonMesh mesh;
   mesh.read(argv[1]);
 
   //// instantiate 4 vertex handles
@@ -75,14 +75,14 @@ int main( int argc, char** argv )
     //オブジェクトの宙鮫
     glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 
-    LgMesh::PolygonMesh::Face_iterator   fit;
-    LgMesh::PolygonMesh::Vertex_around_face_circulator vfc, vfc_end;
-    LgMesh::PolygonMesh::Face_attribute<LgMesh::Vec3> f_normals = mesh.get_face_attribute<LgMesh::Vec3>("f:normal");
+    LG::PolygonMesh::Face_iterator   fit;
+    LG::PolygonMesh::Vertex_around_face_circulator vfc, vfc_end;
+    LG::PolygonMesh::Face_attribute<LG::Vec3> f_normals = mesh.get_face_attribute<LG::Vec3>("f:normal");
 
     for (fit = mesh.faces_begin(); fit != mesh.faces_end(); ++fit)
     {
       glBegin(GL_TRIANGLES);
-      LgMesh::Vec3 n = f_normals[*fit];
+      LG::Vec3 n = f_normals[*fit];
       glNormal3d(n.x(), n.y(), n.z());
 
       vfc = mesh.vertices(*fit);
@@ -90,7 +90,7 @@ int main( int argc, char** argv )
 
       do 
       {
-        LgMesh::Vec3 vp = mesh.position((*vfc));
+        LG::Vec3 vp = mesh.position((*vfc));
         glVertex3d ( vp.x(), vp.y(), vp.z());
       } while (++vfc != vfc_end);
 

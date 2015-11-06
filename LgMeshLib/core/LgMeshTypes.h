@@ -5,7 +5,7 @@
 
 #include "Eigen/Eigen"
 
-namespace LgMesh {
+namespace LG {
 
 // default use float
 #ifdef LGMESH_SCALAR_TYPE

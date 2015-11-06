@@ -1,6 +1,6 @@
 #include "core/PolygonMesh.h"
 
-using namespace LgMesh;
+using namespace LG;
 
 void init()
 {

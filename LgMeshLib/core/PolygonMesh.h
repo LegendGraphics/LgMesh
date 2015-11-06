@@ -5,7 +5,7 @@
 #include "Kernel.h"
 #include "LgMeshTypes.h"
 
-namespace LgMesh {
+namespace LG {
 
 
 class PolygonMesh : public Kernel

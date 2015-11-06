@@ -1,7 +1,7 @@
 #include "PolygonMesh.h"
 #include "IO.h"
 
-namespace LgMesh {
+namespace LG {
 
 
 PolygonMesh::PolygonMesh()

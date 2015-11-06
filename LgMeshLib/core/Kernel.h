@@ -5,7 +5,7 @@
 #include <stdexcept>
 #include <string>
 
-namespace LgMesh {
+namespace LG {
 
 // Base class for Mesh
 // Support for adding global attributes to Mesh
@@ -63,7 +63,7 @@ public:
   template <class T>
   T& add_attribute(const std::string& name, const T& initval)
   {
-    T& val = add_attribute(name);
+    T& val = add_attribute<T>(name);
     val = initval;
     return val;
   }

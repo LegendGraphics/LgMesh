@@ -1,6 +1,6 @@
 #include "IO.h"
 
-namespace LgMesh {
+namespace LG {
 
 
 bool read_obj(PolygonMesh& mesh, const std::string& filename)
