@@ -436,6 +436,47 @@ Scalar PolygonMesh::edge_length(Edge e) const
 }
 
 
+void PolygonMesh::update_laplacian_cot()
+{
+  // compute the Cotangent formula for Laplace-Beltrami Operator
+  // (cot(alpha) + cot(beta)) / 2
+  PolygonMesh::Edge_attribute<Scalar> laplacian_cot = edge_attribute<Scalar>("e:laplacian_cot");
+
+  Edge_iterator eit = edges_begin(), eend = edges_end();
+  for (; eit != eend; ++eit)
+  {
+    laplacian_cot[*eit] = compute_laplacian_cot(*eit);
+  }
+}
+
+Scalar PolygonMesh::compute_laplacian_cot(Edge e) const
+{
+  // first we get the two points of this edge
+  Vec3 v0 = vpoint_[vertex(e, 0)];
+  Vec3 v1 = vpoint_[vertex(e, 0)];
+  Scalar e1 = (v1 - v0).norm();
+  Scalar alpha_cos = 0.0;
+  Scalar beta_cos = 0.0;
+
+  // then get either halfedge of this edge
+  if (!is_boundary(halfedge(e, 0)))
+  {
+    Vec3 v2 = vpoint_[to_vertex(next_halfedge(halfedge(e, 0)))];
+    Scalar e2 = (v1 - v2).norm();
+    Scalar e3 = (v0 - v2).norm();
+    alpha_cos = fabs((e3 * e3 + e2 * e3 - e1 * e1) / (2 * e3 * e2));
+  }
+  if (!is_boundary(halfedge(e, 1)))
+  {
+    Vec3 v2 = vpoint_[to_vertex(next_halfedge(halfedge(e, 1)))];
+    Scalar e2 = (v1 - v2).norm();
+    Scalar e3 = (v0 - v2).norm();
+    beta_cos = fabs((e3 * e3 + e2 * e3 - e1 * e1) / (2 * e3 * e2));
+  }
+
+  return ((alpha_cos/sqrt(1-alpha_cos*alpha_cos))+(beta_cos/sqrt(1-beta_cos*beta_cos)))/2;
+}
+
 void PolygonMesh::adjust_outgoing_halfedge(Vertex v)
 {
   Halfedge h = halfedge(v);
