@@ -1314,6 +1314,10 @@ public: //--- geometry-related functions
 
   Scalar edge_length(Edge e) const;
 
+  void update_laplacian_cot();
+
+  Scalar compute_laplacian_cot(Edge e) const;
+
 
 
 public: //--- allocate new elements
