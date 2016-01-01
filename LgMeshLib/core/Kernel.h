@@ -19,6 +19,8 @@ class Kernel
     const std::type_info& mytype;
     BaseGlobalAttribute(const std::type_info& mytype = typeid(void))
       : mytype(mytype) {}
+    // Return a deep copy of itself
+    virtual BaseGlobalAttribute* clone() const = 0;
   };
 
   // Template class for GlobalAttribute
@@ -28,6 +30,12 @@ class Kernel
   public:
     T value;
     GlobalAttribute() : BaseGlobalAttribute(typeid(T)) {}
+    GlobalAttribute* clone() const
+    {
+      GlobalAttribute<T>* g_attr = new GlobalAttribute<T>();
+      g_attr->value = value;
+      return g_attr;
+    }
   };
 
 private:
@@ -41,6 +49,18 @@ public:
     {
       delete (it->second);
     }
+  }
+
+  Kernel& operator=(const Kernel& _rhs)
+  {
+    if (this != &_rhs)
+    {
+      for (auto it : _rhs.global_attrs_)
+      {
+        global_attrs_[it.first] = it.second->clone();
+      }
+    }
+    return *this;
   }
 
 public:
