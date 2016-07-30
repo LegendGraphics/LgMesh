@@ -48,7 +48,7 @@ int main( int argc, char** argv )
   Eigen::Vector3d bmin(-1, -1, -1);
   Eigen::Vector3d bmax(1, 1, 1);
   //mesh.getBoundingBox(bmin, bmax);
-  Camera camera;
+  Camera camera(std::stod(std::string(argv[2])));
   camera.init( bmin, bmax );
 
 

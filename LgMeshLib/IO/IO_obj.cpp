@@ -159,5 +159,88 @@ bool read_obj(PolygonMesh& mesh, const std::string& filename)
   return true;
 }
 
+bool write_obj(const PolygonMesh& mesh, const std::string& filename)
+{
+  typedef Vec3 Texture_coordinate;
+
+  FILE* out = fopen(filename.c_str(), "w");
+  if (!out)
+    return false;
+
+  // comment
+  fprintf(out, "# OBJ export from Surface_mesh\n");
+
+  //vertices
+  PolygonMesh::Vertex_attribute<Vec3> points = mesh.get_vertex_attribute<Vec3>("v:point");
+  for (PolygonMesh::Vertex_iterator vit=mesh.vertices_begin(); vit!=mesh.vertices_end(); ++vit)
+  {
+    const Vec3& p = points[*vit];
+    fprintf(out, "v %.10f %.10f %.10f\n", p[0], p[1], p[2]);
+  }
+
+  //normals
+  PolygonMesh::Vertex_attribute<Vec3> normals = mesh.get_vertex_attribute<Vec3>("v:normal");
+  if(normals)
+  {
+    for (PolygonMesh::Vertex_iterator vit=mesh.vertices_begin(); vit!=mesh.vertices_end(); ++vit)
+    {
+      const Vec3& p = normals[*vit];
+      fprintf(out, "vn %.10f %.10f %.10f\n", p[0], p[1], p[2]);
+    }
+  }
+
+  //optionally texture coordinates
+  // do we have them?
+  std::vector<std::string> h_props= mesh.halfedge_attributes();
+  bool with_tex_coord = false;
+  std::vector<std::string>::iterator h_prop_end = h_props.end();
+  std::vector<std::string>::iterator h_prop_start= h_props.begin();
+  while(h_prop_start!=h_prop_end)
+  {
+    if(0==(*h_prop_start).compare("h:texcoord"))
+    {
+      with_tex_coord=true;
+    }
+    ++h_prop_start;
+  }
+
+  //if so then add
+  if(with_tex_coord)
+  {
+    PolygonMesh::Halfedge_attribute<Texture_coordinate> tex_coord = mesh.get_halfedge_attribute<Texture_coordinate>("h:texcoord");
+    for (PolygonMesh::Halfedge_iterator hit=mesh.halfedges_begin(); hit!=mesh.halfedges_end(); ++hit)
+    {
+      const Texture_coordinate& pt = tex_coord[*hit];
+      fprintf(out, "vt %.10f %.10f %.10f\n", pt[0], pt[1], pt[2]);
+    }
+  }
+
+  //faces
+  for (PolygonMesh::Face_iterator fit=mesh.faces_begin(); fit!=mesh.faces_end(); ++fit)
+  {
+    fprintf(out, "f");
+    PolygonMesh::Vertex_around_face_circulator fvit=mesh.vertices(*fit), fvend=fvit;
+    PolygonMesh::Halfedge_around_face_circulator fhit=mesh.halfedges(*fit);
+    do
+    {
+      if(with_tex_coord)
+      {
+        // write vertex index, tex_coord index and normal index
+        fprintf(out, " %d/%d/%d", (*fvit).idx()+1, (*fhit).idx()+1, (*fvit).idx()+1);
+        ++fhit;
+      }
+      else
+      {
+        // write vertex index and normal index
+        fprintf(out, " %d//%d", (*fvit).idx()+1, (*fvit).idx()+1);
+      }
+    }
+    while (++fvit != fvend);
+    fprintf(out, "\n");
+  }
+
+  fclose(out);
+  return true;
+}
 
 }

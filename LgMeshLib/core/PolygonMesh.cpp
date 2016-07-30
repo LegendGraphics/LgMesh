@@ -33,7 +33,11 @@ operator=(const PolygonMesh& rhs)
 {
   if (this != &rhs)
   {
+    // deep copy of kernel global attributes
+    Kernel::operator=(rhs);
+
     // deep copy of property containers
+
     vattrs_ = rhs.vattrs_;
     hattrs_ = rhs.hattrs_;
     eattrs_ = rhs.eattrs_;
